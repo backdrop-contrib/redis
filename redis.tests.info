@@ -1,0 +1,132 @@
+[Redis_Tests_Admin_VariableTestCase]
+name = Redis variables
+description = Checks that Redis module variables are correctly type hinted when saved.
+group = Redis
+file = lib/Redis/Tests/Admin/VariableTestCase.test
+
+[Redis_Tests_Cache_CompressedPhpRedisFixesUnitTestCase]
+name = Compressed PhpRedis cache fixes
+description = Tests Redis module cache fixes feature.
+group = Redis
+file = lib/Redis/Tests/Cache/CompressedPhpRedisFixesUnitTestCase.test
+
+[Redis_Tests_Cache_CompressedPhpRedisFlushUnitTestCase]
+name = Compressed PhpRedis cache flush
+description = Tests Redis module cache flush modes feature.
+group = Redis
+file = lib/Redis/Tests/Cache/CompressedPhpRedisFlushUnitTestCase.test
+
+[Redis_Tests_Cache_CompressedPhpRedisShardedFixesUnitTestCase]
+name = Compressed PhpRedis cache fixes (S)
+description = Tests Redis module cache fixes feature.
+group = Redis
+file = lib/Redis/Tests/Cache/CompressedPhpRedisShardedFixesUnitTestCase.test
+
+[Redis_Tests_Cache_CompressedPhpRedisShardedFlushUnitTestCase]
+name = Compressed PhpRedis cache flush (S)
+description = Tests Redis module cache flush modes feature.
+group = Redis
+file = lib/Redis/Tests/Cache/CompressedPhpRedisShardedFlushUnitTestCase.test
+
+[Redis_Tests_Cache_CompressedPhpRedisShardedWithPipelineFixesUnitTestCase]
+name = Compressed PhpRedis cache fixes (SP)
+description = Tests Redis module cache fixes feature.
+group = Redis
+file = lib/Redis/Tests/Cache/CompressedPhpRedisShardedWithPipelineFixesUnitTestCase.test
+
+[Redis_Tests_Cache_PhpRedisFixesUnitTestCase]
+name = PhpRedis cache fixes
+description = Tests Redis module cache fixes feature.
+group = Redis
+file = lib/Redis/Tests/Cache/PhpRedisFixesUnitTestCase.test
+
+[Redis_Tests_Cache_PhpRedisFlushUnitTestCase]
+name = PhpRedis cache flush
+description = Tests Redis module cache flush modes feature.
+group = Redis
+file = lib/Redis/Tests/Cache/PhpRedisFlushUnitTestCase.test
+
+[Redis_Tests_Cache_PhpRedisShardedFixesUnitTestCase]
+name = PhpRedis cache fixes (S)
+description = Tests Redis module cache fixes feature.
+group = Redis
+file = lib/Redis/Tests/Cache/PhpRedisShardedFixesUnitTestCase.test
+
+[Redis_Tests_Cache_PhpRedisShardedFlushUnitTestCase]
+name = PhpRedis cache flush (S)
+description = Tests Redis module cache flush modes feature.
+group = Redis
+file = lib/Redis/Tests/Cache/PhpRedisShardedFlushUnitTestCase.test
+
+[Redis_Tests_Cache_PhpRedisShardedWithPipelineFixesUnitTestCase]
+name = PhpRedis cache fixes (SP)
+description = Tests Redis module cache fixes feature.
+group = Redis
+file = lib/Redis/Tests/Cache/PhpRedisShardedWithPipelineFixesUnitTestCase.test
+
+[Redis_Tests_Cache_PredisFixesUnitTestCase]
+name = Predis cache fixes
+description = Tests Redis module cache fixes feature.
+group = Redis
+file = lib/Redis/Tests/Cache/PredisFixesUnitTestCase.test
+
+[Redis_Tests_Cache_PredisFlushUnitTestCase]
+name = Predis cache flush
+description = Tests Redis module cache flush modes feature.
+group = Redis
+file = lib/Redis/Tests/Cache/PredisFlushUnitTestCase.test
+
+[Redis_Tests_Cache_PredisShardedFixesUnitTestCase]
+name = Predis cache fixes (S)
+description = Tests Redis module cache fixes feature.
+group = Redis
+file = lib/Redis/Tests/Cache/PredisShardedFixesUnitTestCase.test
+
+[Redis_Tests_Cache_PredisShardedFlushUnitTestCase]
+name = Predis cache flush (S)
+description = Tests Redis module cache flush modes feature.
+group = Redis
+file = lib/Redis/Tests/Cache/PredisShardedFlushUnitTestCase.test
+
+[Redis_Tests_Cache_PredisShardedWithPipelineFixesUnitTestCase]
+name = Predis cache fixes (SP)
+description = Tests Redis module cache fixes feature.
+group = Redis
+file = lib/Redis/Tests/Cache/PredisShardedWithPipelineFixesUnitTestCase.test
+
+[Redis_Tests_Client_UnitTestCase]
+name = Redis client manager
+description = Tests Redis module client manager feature.
+group = Redis
+file = lib/Redis/Tests/Client/ClientUnitTestCase.test
+
+[Redis_Tests_Lock_PhpRedisLockingUnitTestCase]
+name = PhpRedis Redis locking
+description = Ensure that Redis locking feature is working OK.
+group = Redis
+file = lib/Redis/Tests/Lock/PhpRedisLockingUnitTestCase.test
+
+[Redis_Tests_Lock_PredisLockingUnitTestCase]
+name = Predis Redis locking
+description = Ensure that Redis locking feature is working OK.
+group = Redis
+file = lib/Redis/Tests/Lock/PredisLockingUnitTestCase.test
+
+[Redis_Tests_Path_PhpRedisPathUnitTestCase]
+name = PhpRedis path inc replacement
+description = Tests PhpRedis path inc replacement.
+group = Redis
+file = lib/Redis/Tests/Path/PhpRedisPathUnitTestCase.test
+
+[Redis_Tests_Path_PredisPathUnitTestCase]
+name = Predis path inc replacement
+description = Tests Predis path inc replacement.
+group = Redis
+file = lib/Redis/Tests/Path/PredisPathUnitTestCase.test
+
+[Redis_Tests_Queue_PhpRedisQueueUnitTestCase]
+name = PhpRedis Redis queue
+description = Ensure that Redis queue feature is working OK.
+group = Redis
+file = lib/Redis/Tests/Queue/PhpRedisQueueUnitTestCase.test
+

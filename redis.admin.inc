@@ -9,7 +9,9 @@
  * Main settings and review administration screen.
  */
 function redis_settings_form($form, &$form_state) {
+  $config = config('redis.settings');
 
+  $form['#config'] = 'redis.settings';
   $form['connection'] = array(
     '#type' => 'fieldset',
     '#title' => t("Connection information"),
@@ -26,25 +28,25 @@ function redis_settings_form($form, &$form_state) {
   $form['connection']['redis_client_host'] = array(
     '#type' => 'textfield',
     '#title' => t("Host"),
-    '#default_value' => variable_get('redis_client_host', NULL),
+    '#default_value' => $config->get('redis_client_host'),
     '#description' => t("Redis server host. Default is <em>@default</em>.", array('@default' => Redis_Client_Manager::REDIS_DEFAULT_HOST)),
   );
   $form['connection']['redis_client_port'] = array(
     '#type' => 'textfield',
     '#title' => t("Port"),
-    '#default_value' => variable_get('redis_client_port', NULL),
+    '#default_value' => $config->get('redis_client_port'),
     '#description' => t("Redis server port. Default is <em>@default</em>.", array('@default' => Redis_Client_Manager::REDIS_DEFAULT_PORT)),
   );
   $form['connection']['redis_client_socket'] = array(
     '#type' => 'textfield',
     '#title' => t("UNIX socket"),
-    '#default_value' => variable_get('redis_client_socket', NULL),
+    '#default_value' => $config->get('redis_client_socket'),
     '#description' => t("Redis UNIX socket for connection. If set remote server host and port will be ignored."),
   );
   $form['connection']['redis_client_base'] = array(
     '#type' => 'textfield',
     '#title' => t("Database"),
-    '#default_value' => variable_get('redis_client_base', NULL),
+    '#default_value' => $config->get('redis_client_base'),
     '#description' => t("Redis server database. Default is none, Redis server will autoselect the database 0."),
   );
   $form['connection']['redis_client_interface'] = array(
@@ -55,7 +57,7 @@ function redis_settings_form($form, &$form_state) {
       'PhpRedis' => t("PhpRedis PHP extension"),
       'Predis' => t("Predis PHP library"),
     ),
-    '#default_value' => variable_get('redis_client_interface', NULL),
+    '#default_value' => $config->get('redis_client_interface'),
     '#description' => t("Redis low level backend."),
   );
 
@@ -84,6 +86,7 @@ function redis_settings_form_submit_clean_values($form, &$form_state) {
       // that system_settings_form_submit() won't find it and attempt to save
       // it.
       $form_state['values'] = array_diff_key($form_state['values'], array($name => NULL));
+      // TODO This variable was probably removed in Backdrop without replacement.
       variable_del($name);
     }
   }
@@ -96,9 +99,11 @@ function redis_settings_form_submit_clean_values($form, &$form_state) {
     // meaning and should be kept as is).
     if ('0' !== $form_state['values'][$name] && empty($form_state['values'][$name])) {
       $form_state['values'] = array_diff_key($form_state['values'], array($name => NULL));
+      // TODO This variable was probably removed in Backdrop without replacement.
       variable_del($name);
-    } else {
-      $form_state['values'][$name] = (int)$form_state['values'][$name];
+    }
+    else {
+      $form_state['values'][$name] = (int) $form_state['values'][$name];
     }
   }
 }

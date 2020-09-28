@@ -23,7 +23,7 @@ function redis_menu() {
   );
   $items['admin/config/development/performance/redis'] = array(
     'title' => "Redis",
-    'page callback' => 'drupal_get_form',
+    'page callback' => 'backdrop_get_form',
     'page arguments' => array('redis_settings_form'),
     'access arguments' => array('administer site configuration'),
     'type' => MENU_LOCAL_TASK,
@@ -49,13 +49,24 @@ function redis_help($path, $arg) {
 }
 
 /**
+ * Implements hook_config_info().
+ */
+function redis_config_info() {
+  $prefixes['redis.settings'] = array(
+    'label' => t('Redis module settings'),
+    'group' => t('Configuration'),
+  );
+  return $prefixes;
+}
+
+/**
  * Get Redis client for php-redis extension.
  *
  * @return \Redis
  */
 function phpredis_client_get() {
-  if ('PhpRedis' !== variable_get('redis_client_interface')) {
-    throw new \LogicException("Redis is not configured to use the php-redis client");
+  if ('PhpRedis' !== config_get('redis.settings', 'redis_client_interface')) {
+    throw new LogicException("Redis is not configured to use the php-redis client");
   }
   return Redis_Client::getClient();
 }
@@ -66,8 +77,49 @@ function phpredis_client_get() {
  * @return \Predis\Client
  */
 function predis_client_get() {
-  if ('Predis' !== variable_get('redis_client_interface')) {
-    throw new \LogicException("Redis is not configured to use the Predis client");
+  if ('Predis' !== config_get('redis.settings', 'redis_client_interface')) {
+    throw new LogicException("Redis is not configured to use the Predis client");
   }
   return Redis_Client::getClient();
+}
+
+/**
+ * Implements hook_autoload_info().
+ */
+function redis_autoload_info() {
+  return array(
+    'Redis_AbstractBackend' => 'lib/Redis/AbstractBackend.php',
+    'Redis_BackendInterface' => 'lib/Redis/BackendInterface.php',
+    'Redis_Cache_BackendInterface' => 'lib/Redis/Cache/BackendInterface.php',
+    'Redis_Cache_Base' => 'lib/Redis/Cache/Base.php',
+    'Redis_Cache_PhpRedis' => 'lib/Redis/Cache/PhpRedis.php',
+    'Redis_Cache_Predis' => 'lib/Redis/Cache/Predis.php',
+    'Redis_Cache' => 'lib/Redis/Cache.php',
+    'Redis_CacheCompressed' => 'lib/Redis/CacheCompressed.php',
+    'Redis_Client_FactoryInterface' => 'lib/Redis/Client/FactoryInterface.php',
+    'Redis_Client_Manager' => 'lib/Redis/Client/Manager.php',
+    'Redis_Client_PhpRedis' => 'lib/Redis/Client/PhpRedis.php',
+    'Redis_Client_Predis' => 'lib/Redis/Client/Predis.php',
+    'Redis_Client' => 'lib/Redis/Client.php',
+    'Redis_Lock_BackendInterface' => 'lib/Redis/Lock/BackendInterface.php',
+    'Redis_Lock_DefaultBackend' => 'lib/Redis/Lock/DefaultBackend.php',
+    'Redis_Lock_PhpRedis' => 'lib/Redis/Lock/PhpRedis.php',
+    'Redis_Lock_Predis' => 'lib/Redis/Lock/Predis.php',
+    'Redis_Lock' => 'lib/Redis/Lock.php',
+    'Redis_Path_AbstractHashLookup' => 'lib/Redis/Path/AbstractHashLookup.php',
+    'Redis_Path_HashLookupInterface' => 'lib/Redis/Path/HashLookupInterface.php',
+    'Redis_Path_NullHashLookup' => 'lib/Redis/Path/NullHashLookup.php',
+    'Redis_Path_PhpRedis' => 'lib/Redis/Path/PhpRedis.php',
+    'Redis_Path_Predis' => 'lib/Redis/Path/Predis.php',
+    'Redis_Queue_Base' => 'lib/Redis/Queue/Base.php',
+    'Redis_Queue_PhpRedis' => 'lib/Redis/Queue/PhpRedis.php',
+    'Redis_Queue' => 'lib/Redis/Queue.php',
+    'Redis_Tests_AbstractUnitTestCase' => 'lib/Redis/Tests/AbstractUnitTestCase.php',
+    'Redis_Tests_Cache_FixesUnitTestCase' => 'lib/Redis/Tests/Cache/FixesUnitTestCase.php',
+    'Redis_Tests_Cache_FlushUnitTestCase' => 'lib/Redis/Tests/Cache/FlushUnitTestCase.php',
+    'Redis_Tests_Client_MockFactory' => 'lib/Redis/Tests/Client/MockFactory.php',
+    'Redis_Tests_Lock_LockingUnitTestCase' => 'lib/Redis/Tests/Lock/LockingUnitTestCase.php',
+    'Redis_Tests_Path_PathUnitTestCase' => 'lib/Redis/Tests/Path/PathUnitTestCase.php',
+    'Redis_Tests_Queue_QueueUnitTestCase' => 'lib/Redis/Tests/Queue/QueueUnitTestCase.php',
+  );
 }

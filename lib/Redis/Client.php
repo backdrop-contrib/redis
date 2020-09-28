@@ -74,7 +74,7 @@ class Redis_Client
                 // settings.
               self::$globalPrefix = md5($GLOBALS['db_url']);
             } else {
-                require_once DRUPAL_ROOT . '/includes/database/database.inc';
+                require_once BACKDROP_ROOT . '/core/includes/database/database.inc';
                 $dbInfo = Database::getConnectionInfo();
                 $active = $dbInfo['default'];
                 self::$globalPrefix = md5($active['host'] . $active['database'] . $active['prefix']['default']);
@@ -178,16 +178,16 @@ class Redis_Client
      */
     static public function getClientInterfaceName()
     {
-        global $conf;
+        global $settings;
 
-        if (!empty($conf['redis_client_interface'])) {
-            return $conf['redis_client_interface'];
+        if (!empty($settings['redis_client_interface'])) {
+            return $settings['redis_client_interface'];
         } else if (class_exists('Predis\Client')) {
             // Transparent and abitrary preference for Predis library.
-            return  $conf['redis_client_interface'] = 'Predis';
+            return  $settings['redis_client_interface'] = 'Predis';
         } else if (class_exists('Redis')) {
             // Fallback on PhpRedis if available.
-            return $conf['redis_client_interface'] = 'PhpRedis';
+            return $settings['redis_client_interface'] = 'PhpRedis';
         } else {
             throw new Exception("No client interface set.");
         }

@@ -21,18 +21,43 @@ function redis_requirements($phase) {
   try {
     Redis_Client::getClient();
     $requirements['redis'] = array(
-      'title'       => "Redis",
-      'value'       => t("Connected, using the <em>@name</em> client.", array('@name' => Redis_Client::getClientInterfaceName())),
-      'severity'    => REQUIREMENT_OK,
+      'title' => "Redis",
+      'value' => t("Connected, using the <em>@name</em> client.", array('@name' => Redis_Client::getClientInterfaceName())),
+      'severity' => REQUIREMENT_OK,
     );
-  } catch (Exception $e) {
+  }
+  catch (Exception $e) {
     $requirements['redis'] = array(
-      'title'       => "Redis",
-      'value'       => t("Not connected."),
-      'severity'    => REQUIREMENT_WARNING,
+      'title' => "Redis",
+      'value' => t("Not connected."),
+      'severity' => REQUIREMENT_WARNING,
       'description' => t("No Redis client connected. Please ensure that your Redis connection is working properly. If you are not using a Redis server connection you should disable this module."),
     );
   }
 
   return $requirements;
+}
+
+/**
+ * Implements hook_update_N().
+ */
+function redis_update_1000() {
+  $config = config('redis.settings');
+  $config->set('redis_client_host', update_variable_get('redis_client_host', 'NULL'));
+  $config->set('redis_client_port', update_variable_get('redis_client_port', 'NULL'));
+  $config->set('redis_client_socket', update_variable_get('redis_client_socket', 'NULL'));
+  $config->set('redis_client_base', update_variable_get('redis_client_base', 'NULL'));
+  $config->set('redis_client_interface', update_variable_get('redis_client_interface', ''));
+  update_variable_del('redis_client_host');
+  update_variable_del('redis_client_port');
+  update_variable_del('redis_client_socket');
+  update_variable_del('redis_client_base');
+  update_variable_del('redis_client_interface');
+}
+
+/**
+ * Implements hook_install().
+ */
+function redis_install() {
+  // Dynamically generated variable data was detected.
 }

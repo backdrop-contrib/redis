@@ -3,7 +3,7 @@
 /**
  * This typically brings 80..85% compression in ~20ms/mb write, 5ms/mb read.
  */
-class Redis_CacheCompressed extends Redis_Cache implements DrupalCacheInterface
+class Redis_CacheCompressed extends Redis_Cache implements BackdropCacheInterface
 {
     private $compressionSizeThreshold = 100;
     private $compressionRatio = 1;

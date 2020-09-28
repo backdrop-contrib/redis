@@ -16,7 +16,8 @@ define('REDIS_ROOT', dirname(__FILE__) . '/lib');
 function redis_autoload($class_name) {
   if ('Redis' === substr($class_name, 0, 5)) {
     $filename = REDIS_ROOT . '/' . str_replace('_', '/', $class_name) . '.php';
-    return @include_once $filename;
+    include_once $filename;
+    return;
   }
   return FALSE;
 }

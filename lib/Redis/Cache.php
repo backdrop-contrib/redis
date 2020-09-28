@@ -8,8 +8,7 @@
  * classes as they may differ in how the API handles transaction, pipelining
  * and return values.
  */
-class Redis_Cache
-    implements DrupalCacheInterface
+class Redis_Cache implements BackdropCacheInterface
 {
     /**
      * Default lifetime for permanent items.
@@ -542,6 +541,43 @@ class Redis_Cache
         }
     }
 
+  public function delete($cid) {
+    $this->backend->delete($cid);
+  }
+
+  public function deleteMultiple($cids) {
+    $this->backend->deleteMultiple($cids);
+  }
+
+  public function deletePrefix($prefix) {
+    if (!$this->isSharded) {
+      $this->backend->deleteByPrefix($prefix);
+    } else {
+      // @todo This needs a map algorithm the same way memcache
+      // module implemented it for invalidity by prefixes. This
+      // is a very stupid fallback
+      $this->setLastFlushTime(true);
+    }
+  }
+
+  public function flush() {
+    // Use max() to ensure we invalidate both correctly
+    $this->setLastFlushTime(true);
+
+    if (!$this->isSharded) {
+      $this->backend->flush();
+    }
+  }
+
+  public function garbageCollection() {
+    $this->setLastFlushTime(false, true);
+
+    if (!$this->isSharded && $this->allowTemporaryFlush) {
+      $this->backend->flushVolatile();
+    }
+  }
+
+
     public function isEmpty()
     {
        return false;
@@ -653,4 +689,5 @@ class Redis_Cache
             return $this->getNextIncrement();
         }
     }
+
 }
