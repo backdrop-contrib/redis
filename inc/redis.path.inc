@@ -35,7 +35,7 @@ function backdrop_path_initialize() {
   // Ensure $_GET['q'] is set before calling backdrop_normal_path(), to support
   // path caching with hook_url_inbound_alter().
   if (empty($_GET['q'])) {
-    $_GET['q'] = config_get('system.performance', 'site_frontpage');
+    $_GET['q'] = config_get('system.core', 'site_frontpage');
   }
   $_GET['q'] = backdrop_get_normal_path($_GET['q']);
 }
