@@ -98,7 +98,7 @@ class Redis_Client
         if (!empty($GLOBALS['drupal_test_info']['test_run_id'])) {
             $ret = $GLOBALS['drupal_test_info']['test_run_id'];
         } else {
-            $prefixes = variable_get('cache_prefix', null);
+            $prefixes = settings_get('redis_prefix', null);
 
             if (is_string($prefixes)) {
                 // Variable can be a string which then considered as a default
