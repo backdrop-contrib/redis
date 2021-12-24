@@ -44,7 +44,7 @@ abstract class Redis_Tests_Cache_FixesUnitTestCase extends Redis_Tests_AbstractU
 
     public function testTemporaryCacheExpire()
     {
-        global $conf; // We are in unit tests so variable table does not exist.
+        global $settings; // We are in unit tests so variable table does not exist.
 
         $backend = $this->getBackend();
 
@@ -61,7 +61,7 @@ abstract class Redis_Tests_Cache_FixesUnitTestCase extends Redis_Tests_AbstractU
         $this->assertIdentical('foo', $data->data);
 
         // Expiring entry with permanent default lifetime.
-        $conf['cache_lifetime'] = 0;
+        $settings['cache_lifetime'] = 0;
         $backend->set('test2', 'bar', CACHE_TEMPORARY);
         sleep(2);
         $data = $backend->get('test2');
@@ -87,7 +87,7 @@ abstract class Redis_Tests_Cache_FixesUnitTestCase extends Redis_Tests_AbstractU
         $this->assertEqual(false, $data);
 
         // Expiring entry with short default lifetime.
-        $conf['cache_lifetime'] = 1;
+        $settings['cache_lifetime'] = 1;
         $backend->refreshMaxTtl();
         $backend->set('test5', 'foobaz', CACHE_TEMPORARY);
         $data = $backend->get('test5');
@@ -100,26 +100,26 @@ abstract class Redis_Tests_Cache_FixesUnitTestCase extends Redis_Tests_AbstractU
 
     public function testDefaultPermTtl()
     {
-        global $conf;
-        unset($conf['redis_perm_ttl']);
+        global $settings;
+        unset($settings['redis_perm_ttl']);
         $backend = $this->getBackend();
         $this->assertIdentical(Redis_Cache::LIFETIME_PERM_DEFAULT, $backend->getPermTtl());
     }
 
     public function testUserSetDefaultPermTtl()
     {
-        global $conf;
+        global $settings;
         // This also testes string parsing. Not fully, but at least one case.
-        $conf['redis_perm_ttl'] = "3 months";
+        $settings['redis_perm_ttl'] = "3 months";
         $backend = $this->getBackend();
         $this->assertIdentical(7776000, $backend->getPermTtl());
     }
 
     public function testUserSetPermTtl()
     {
-        global $conf;
+        global $settings;
         // This also testes string parsing. Not fully, but at least one case.
-        $conf['redis_perm_ttl'] = "1 months";
+        $settings['redis_perm_ttl'] = "1 months";
         $backend = $this->getBackend();
         $this->assertIdentical(2592000, $backend->getPermTtl());
     }
@@ -153,9 +153,9 @@ abstract class Redis_Tests_Cache_FixesUnitTestCase extends Redis_Tests_AbstractU
 
     public function testPermTtl()
     {
-        global $conf;
+        global $settings;
         // This also testes string parsing. Not fully, but at least one case.
-        $conf['redis_perm_ttl'] = "2 seconds";
+        $settings['redis_perm_ttl'] = "2 seconds";
         $backend = $this->getBackend();
         $this->assertIdentical(2, $backend->getPermTtl());
 

@@ -103,16 +103,16 @@ abstract class Redis_Tests_Lock_LockingUnitTestCase extends Redis_Tests_Abstract
         /*
          * Code for web test case
          *
-        $this->drupalGet('redis/acquire/test1/1000');
+        $this->backdropGet('redis/acquire/test1/1000');
         $this->assertText("REDIS_ACQUIRED", "Lock test1 acquired");
 
-        $this->drupalGet('redis/acquire/test1/1');
+        $this->backdropGet('redis/acquire/test1/1');
         $this->assertText("REDIS_FAILED", "Lock test1 could not be acquired by a second thread");
 
-        $this->drupalGet('redis/acquire/test2/1000');
+        $this->backdropGet('redis/acquire/test2/1000');
         $this->assertText("REDIS_ACQUIRED", "Lock test2 acquired");
 
-        $this->drupalGet('redis/acquire/test2/1');
+        $this->backdropGet('redis/acquire/test2/1');
         $this->assertText("REDIS_FAILED", "Lock test2 could not be acquired by a second thread");
          */
     }

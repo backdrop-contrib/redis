@@ -20,8 +20,8 @@ You can download this library at:
 
   https://github.com/nrk/predis
 
-This file explains how to install the Predis library and the Drupal cache
-backend. If you are an advanced Drupal integrator, please consider the fact
+This file explains how to install the Predis library and the Backdrop cache
+backend. If you are an advanced Backdrop integrator, please consider the fact
 that you can easily change all the pathes. Pathes used in this file are
 likely to be default for non advanced users.
 
@@ -44,7 +44,7 @@ For example, from your install profiles libraries folder:
 If you choose this solution, you have to alter a bit your $conf array into
 the settings.php file as this:
 
-  define('PREDIS_BASE_PATH', DRUPAL_ROOT . '/profiles/example/libraries/predis/');
+  define('PREDIS_BASE_PATH', BACKDROP_ROOT . '/profiles/example/libraries/predis/');
 
 Connect to a remote host and database
 -------------------------------------

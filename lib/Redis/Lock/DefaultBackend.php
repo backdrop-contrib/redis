@@ -22,7 +22,7 @@ abstract class Redis_Lock_DefaultBackend
   protected $_locks = array();
 
   /**
-   * Default implementation from actual Drupal core.
+   * Default implementation from actual Backdrop core.
    *
    * @see Redis_Lock_BackendInterface::lockWait()
    */
@@ -63,7 +63,7 @@ abstract class Redis_Lock_DefaultBackend
   }
 
   /**
-   * Default implementation from actual Drupal core.
+   * Default implementation from actual Backdrop core.
    *
    * @see Redis_Lock_BackendInterface::getLockId()
    */
@@ -71,7 +71,7 @@ abstract class Redis_Lock_DefaultBackend
     if (!isset($this->_lockId)) {
       $this->_lockId = uniqid(mt_rand(), TRUE);
       // We only register a shutdown function if a lock is used.
-      drupal_register_shutdown_function('lock_release_all', $this->_lockId);
+      backdrop_register_shutdown_function('lock_release_all', $this->_lockId);
     }
     return $this->_lockId;
   }

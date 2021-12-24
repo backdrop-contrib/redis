@@ -3,7 +3,7 @@
 /**
  * Real cache backend primitives. This functions will be used by the
  * Redis_Cache wrapper class that implements the high-level logic that
- * allows us to be Drupal compatible.
+ * allows us to be Backdrop compatible.
  */
 interface Redis_Cache_BackendInterface extends Redis_BackendInterface
 {

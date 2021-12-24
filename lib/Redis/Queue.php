@@ -1,17 +1,17 @@
 <?php
 
-class Redis_Queue implements DrupalReliableQueueInterface
+class Redis_Queue implements BackdropQueueInterface
 {
     /**
-     * @var DrupalQueueInterface
+     * @var BackdropQueueInterface
      */
     protected $backend;
 
     /**
      * Default contructor
      *
-     * Beware that DrupalQueueInterface does not defines the __construct
-     * method in the interface yet is being used from DrupalQueue::get() 
+     * Beware that BackdropQueueInterface does not defines the __construct
+     * method in the interface yet is being used from BackdropQueue::get().
      *
      * @param unknown $name
      */

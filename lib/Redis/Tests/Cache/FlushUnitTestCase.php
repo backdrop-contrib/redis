@@ -45,7 +45,7 @@ abstract class Redis_Tests_Cache_FlushUnitTestCase extends Redis_Tests_AbstractU
 
         $backend = $this->getBackend();
 
-        // Even though we set a flush mode into this bin, Drupal default
+        // Even though we set a flush mode into this bin, Backdrop default
         // behavior when a cache_lifetime is set is to override the backend
         // one in order to keep the core behavior and avoid potential
         // nasty bugs.

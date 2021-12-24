@@ -4,8 +4,8 @@
  * Very fast hash based lookup interface.
  *
  * This will work for any key-value store whether it's APC, Redis, memcache...
- * Rationale behind this is that Drupal calls hundreds of time per request the
- * drupal_lookup_path() function and we need it to be very fast. The key of
+ * Rationale behind this is that Backdrop calls hundreds of time per request the
+ * backdrop_lookup_path() function and we need it to be very fast. The key of
  * success to keep it stupid simple and coherent as the same time is that we
  * consider this backend as a cache (more or less permanent) that might be
  * cleared at any time, and synchronized as when necessary or incrementally.

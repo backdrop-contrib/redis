@@ -23,7 +23,7 @@ Connect via UNIX socket
 
 Just add this line to your settings.php file:
 
-  $conf['redis_cache_socket'] = '/tmp/redis.sock';
+  $settings['redis_cache_socket'] = '/tmp/redis.sock';
 
 Don't forget to change the path depending on your operating system and Redis
 server configuration.

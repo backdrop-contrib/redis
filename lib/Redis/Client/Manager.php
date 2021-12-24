@@ -99,7 +99,7 @@ class Redis_Client_Manager
     }
 
     /**
-     * Build connection parameters array from current Drupal settings
+     * Build connection parameters array from current Backdrop settings
      *
      * @param string $realm
      *

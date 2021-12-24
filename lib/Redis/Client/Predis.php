@@ -24,9 +24,9 @@ class Redis_Client_Predis implements Redis_Client_FactoryInterface {
   /**
    * Define Predis base path if not already set, and if we need to set the
    * autoloader by ourself. This will ensure no crash. Best way would have
-   * been that Drupal ships a PSR-0 autoloader, in which we could manually
+   * been that Backdrop ships a PSR-0 autoloader, in which we could manually
    * add our library path.
-   * 
+   *
    * We cannot do that in the file header, PHP class_exists() function wont
    * see classes being loaded during the autoloading because this file is
    * loaded by another autoloader: attempting the class_exists() during a
@@ -42,18 +42,18 @@ class Redis_Client_Predis implements Redis_Client_FactoryInterface {
 
     self::$stupidCoreWorkaround++;
 
-    // If you attempt to set Drupal's bin cache_bootstrap using Redis, you
+    // If you attempt to set Backdrop's bin cache_bootstrap using Redis, you
     // will experience an infinite loop (breaking by itself the second time
     // it passes by): the following call will wake up autoloaders (and we
     // want that to work since user may have set its own autoloader) but
-    // will wake up Drupal's one too, and because Drupal core caches its
+    // will wake up Backdrop's one too, and because Backdrop core caches its
     // file map, this will trigger this method to be called a second time
     // and boom! Adios bye bye. That's why this will be called early in the
     // 'redis.autoload.inc' file instead.
     if (1 < self::$stupidCoreWorkaround || !class_exists('Predis\Client')) {
 
       if (!defined('PREDIS_BASE_PATH')) {
-        $search = DRUPAL_ROOT . '/sites/all/libraries/predis';
+        $search = BACKDROP_ROOT . '/sites/all/libraries/predis';
         define('PREDIS_BASE_PATH', $search);
       } else {
         $search = PREDIS_BASE_PATH;
@@ -126,7 +126,7 @@ class Redis_Client_Predis implements Redis_Client_FactoryInterface {
 
     // I'm not sure why but the error handler is driven crazy if timezone
     // is not set at this point.
-    // Hopefully Drupal will restore the right one this once the current
+    // Hopefully Backdrop will restore the right one this once the current
     // account has logged in.
     date_default_timezone_set(@date_default_timezone_get());
 

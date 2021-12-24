@@ -63,9 +63,9 @@ class Redis_Cache implements BackdropCacheInterface
     protected $bin;
 
     /**
-     * When the global 'cache_lifetime' Drupal variable is set to a value, the
+     * When the global 'cache_lifetime' Backdrop variable is set to a value, the
      * cache backends should not expire temporary entries by themselves per
-     * Drupal signature. Volatile items will be dropped accordingly to their
+     * Backdrop signature. Volatile items will be dropped accordingly to their
      * set lifetime.
      *
      * @var boolean
@@ -99,7 +99,7 @@ class Redis_Cache implements BackdropCacheInterface
     protected $permTtl = self::LIFETIME_PERM_DEFAULT;
 
     /**
-     * Maximum TTL for this bin from Drupal configuration.
+     * Maximum TTL for this bin from Backdrop configuration.
      *
      * @var int
      */
@@ -182,12 +182,12 @@ class Redis_Cache implements BackdropCacheInterface
     }
 
     /**
-     * Find from Drupal variables the clear mode.
+     * Find from Backdrop variables the clear mode.
      */
     public function refreshCapabilities()
     {
         if (0 < variable_get('cache_lifetime', 0)) {
-            // Per Drupal default behavior, when the 'cache_lifetime' variable
+            // Per Backdrop default behavior, when the 'cache_lifetime' variable
             // is set we must not flush any temporary items since they have a
             // life time.
             $this->allowTemporaryFlush = false;
@@ -204,7 +204,7 @@ class Redis_Cache implements BackdropCacheInterface
     }
 
     /**
-     * Find from Drupal variables the right permanent items TTL.
+     * Find from Backdrop variables the right permanent items TTL.
      */
     protected function refreshPermTtl()
     {
@@ -229,12 +229,12 @@ class Redis_Cache implements BackdropCacheInterface
     }
 
     /**
-     * Find from Drupal variables the maximum cache lifetime.
+     * Find from Backdrop variables the maximum cache lifetime.
      */
     public function refreshMaxTtl()
     {
         // And now cache lifetime. Be aware we exclude negative values
-        // considering those are Drupal misconfiguration.
+        // considering those are Backdrop misconfiguration.
         $maxTtl = variable_get('cache_lifetime', 0);
         if (0 < $maxTtl) {
             if ($maxTtl < $this->permTtl) {
@@ -504,7 +504,7 @@ class Redis_Cache implements BackdropCacheInterface
     public function clear($cid = null, $wildcard = false)
     {
         if (null === $cid && !$wildcard) {
-            // Drupal asked for volatile entries flush, this will happen
+            // Backdrop asked for volatile entries flush, this will happen
             // during cron run, mostly
             $this->setLastFlushTime(false, true);
 
@@ -599,7 +599,7 @@ class Redis_Cache implements BackdropCacheInterface
      * sometime even the same micro second. The only safe way to avoid conflicts
      * is to checksum using an arbitrary computed number (a sequence).
      *
-     * Drupal core does exactly this thus tags checksums are additions of each tag
+     * Backdrop core does exactly this thus tags checksums are additions of each tag
      * individual checksum; each tag checksum is a independent arbitrary serial
      * that gets incremented starting with 0 (no invalidation done yet) to n (n
      * invalidations) which grows over time. This way the checksum computation

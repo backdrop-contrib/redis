@@ -1,6 +1,6 @@
 <?php
 
-// It may happen we get here with no autoloader set during the Drupal core
+// It may happen we get here with no autoloader set during the Backdrop core
 // early bootstrap phase, at cache backend init time.
 if (!interface_exists('Redis_Client_FactoryInterface')) {
     require_once dirname(__FILE__) . '/Client/FactoryInterface.php';
@@ -8,7 +8,7 @@ if (!interface_exists('Redis_Client_FactoryInterface')) {
 }
 
 /**
- * This static class only reason to exist is to tie Drupal global
+ * This static class only reason to exist is to tie Backdrop global
  * configuration to OOP driven code of this module: it will handle
  * everything that must be read from global configuration and let
  * other components live without any existence of it
@@ -68,17 +68,10 @@ class Redis_Client
         // connect to. To mirror what core does with database caching we use
         // the DB credentials to inform our cache key.
       if (null === self::$globalPrefix) {
-            if (isset($GLOBALS['db_url']) && is_string($GLOBALS['db_url'])) {
-                // Drupal 6 specifics when using the cache_backport module, we
-                // therefore cannot use \Database class to determine database
-                // settings.
-              self::$globalPrefix = md5($GLOBALS['db_url']);
-            } else {
-                require_once BACKDROP_ROOT . '/core/includes/database/database.inc';
-                $dbInfo = Database::getConnectionInfo();
-                $active = $dbInfo['default'];
-                self::$globalPrefix = md5($active['host'] . $active['database'] . $active['prefix']['default']);
-            }
+            require_once BACKDROP_ROOT . '/core/includes/database/database.inc';
+            $dbInfo = Database::getConnectionInfo();
+            $active = $dbInfo['default'];
+            self::$globalPrefix = md5($active['host'] . $active['database'] . $active['prefix']['default']);
         }
 
         return self::$globalPrefix;
@@ -95,8 +88,8 @@ class Redis_Client
     {
         $ret = null;
 
-        if (!empty($GLOBALS['drupal_test_info']['test_run_id'])) {
-            $ret = $GLOBALS['drupal_test_info']['test_run_id'];
+        if (!empty($GLOBALS['backdrop_test_info']['test_run_id'])) {
+            $ret = $GLOBALS['backdrop_test_info']['test_run_id'];
         } else {
             $prefixes = settings_get('redis_prefix', null);
 
@@ -140,7 +133,7 @@ class Redis_Client
      */
     static public function getManager()
     {
-        global $conf;
+        global $settings;
 
         if (null === self::$manager) {
 
@@ -149,8 +142,8 @@ class Redis_Client
 
             // Build server list from conf
             $serverList = array();
-            if (isset($conf['redis_servers'])) {
-                $serverList = $conf['redis_servers'];
+            if (isset($settings['redis_servers'])) {
+                $serverList = $settings['redis_servers'];
             }
 
             if (empty($serverList) || !isset($serverList['default'])) {
@@ -159,8 +152,8 @@ class Redis_Client
                 $serverList[Redis_Client_Manager::REALM_DEFAULT] = array();
 
                 foreach (array('host', 'port', 'base', 'password', 'socket') as $key) {
-                    if (isset($conf['redis_client_' . $key])) {
-                        $serverList[Redis_Client_Manager::REALM_DEFAULT][$key] = $conf['redis_client_' . $key];
+                    if (isset($settings['redis_client_' . $key])) {
+                        $serverList[Redis_Client_Manager::REALM_DEFAULT][$key] = $settings['redis_client_' . $key];
                     }
                 }
             }
@@ -176,21 +169,20 @@ class Redis_Client
      *
      * @return string
      */
-    static public function getClientInterfaceName()
-    {
-        global $settings;
+    static public function getClientInterfaceName() {
+      global $settings;
 
-        if (!empty($settings['redis_client_interface'])) {
-            return $settings['redis_client_interface'];
+      if (empty($settings['redis_client_interface'])) {
+        if (class_exists('Redis')) {
+          $settings['redis_client_interface'] = 'PhpRedis';
         } else if (class_exists('Predis\Client')) {
-            // Transparent and abitrary preference for Predis library.
-            return  $settings['redis_client_interface'] = 'Predis';
-        } else if (class_exists('Redis')) {
-            // Fallback on PhpRedis if available.
-            return $settings['redis_client_interface'] = 'PhpRedis';
+          $settings['redis_client_interface'] = 'Predis';
         } else {
             throw new Exception("No client interface set.");
         }
+      }
+
+      return $settings['redis_client_interface'];
     }
 
     /**
@@ -216,12 +208,12 @@ class Redis_Client
     /**
      * Get specific class implementing the current client usage for the specific
      * asked core subsystem.
-     * 
+     *
      * @param string $system
      *   One of the Redis_Client::IMPL_* constant.
      * @param string $clientName
      *   Client name, if fixed.
-     * 
+     *
      * @return string
      *   Class name, if found.
      *

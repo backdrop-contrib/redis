@@ -1,6 +1,6 @@
 <?php
 
-abstract class Redis_Tests_AbstractUnitTestCase extends DrupalUnitTestCase
+abstract class Redis_Tests_AbstractUnitTestCase extends BackdropUnitTestCase
 {
     /**
      * @var boolean
@@ -37,7 +37,7 @@ abstract class Redis_Tests_AbstractUnitTestCase extends DrupalUnitTestCase
     }
 
     /**
-     * Drupal $conf array backup
+     * Backdrop $settings array backup
      *
      * @var array
      */
@@ -51,27 +51,27 @@ abstract class Redis_Tests_AbstractUnitTestCase extends DrupalUnitTestCase
     );
 
     /**
-     * Prepare Drupal environmment for testing
+     * Prepare Backdrop environmment for testing
      */
-    final private function prepareDrupalEnvironment()
+    final private function prepareBackdropEnvironment()
     {
         // Site on which the tests are running may define this variable
         // in their own settings.php file case in which it will be merged
         // with testing site
-        global $conf;
+        global $settings;
         foreach (array_keys($this->originalConf) as $key) {
-            if (isset($conf[$key])) {
-                $this->originalConf[$key] = $conf[$key];
-                unset($conf[$key]);
+            if (isset($settings[$key])) {
+                $this->originalConf[$key] = $settings[$key];
+                unset($settings[$key]);
             }
         }
-        $conf['cache_prefix'] = $this->testId;
+        $settings['cache_prefix'] = $this->testId;
     }
 
     /**
-     * Restore Drupal environment after testing.
+     * Restore Backdrop environment after testing.
      */
-    final private function restoreDrupalEnvironment()
+    final private function restoreBackdropEnvironment()
     {
         $GLOBALS['conf'] = $this->originalConf + $GLOBALS['conf'];
     }
@@ -116,13 +116,13 @@ abstract class Redis_Tests_AbstractUnitTestCase extends DrupalUnitTestCase
     {
         self::enableAutoload();
 
-        $this->prepareDrupalEnvironment();
+        $this->prepareBackdropEnvironment();
         $this->prepareClientManager();
 
         parent::setUp();
 
-        drupal_install_schema('system');
-        drupal_install_schema('locale');
+        backdrop_install_schema('system');
+        backdrop_install_schema('locale');
     }
 
     /**
@@ -130,10 +130,10 @@ abstract class Redis_Tests_AbstractUnitTestCase extends DrupalUnitTestCase
      */
     public function tearDown()
     {
-        drupal_uninstall_schema('locale');
-        drupal_uninstall_schema('system');
+        backdrop_uninstall_schema('locale');
+        backdrop_uninstall_schema('system');
 
-        $this->restoreDrupalEnvironment();
+        $this->restoreBackdropEnvironment();
         $this->restoreClientManager();
 
         parent::tearDown();

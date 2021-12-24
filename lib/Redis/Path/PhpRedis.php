@@ -24,7 +24,7 @@ class Redis_Path_PhpRedis extends Redis_Path_AbstractHashLookup
                 // Prepend the most recent path to ensure it always be
                 // first fetched one
                 // @todo Ensure in case of update that its position does
-                // not changes (pid ordering in Drupal core)
+                // not changes (pid ordering in Backdrop core)
                 $value = $hvalue . self::VALUE_SEPARATOR . $value;
             } else { // Do nothing on empty value
               $value = null;
@@ -79,7 +79,7 @@ class Redis_Path_PhpRedis extends Redis_Path_AbstractHashLookup
             $ret = $client->hget($this->getKey(array($keyPrefix, LANGUAGE_NONE)), $hkey);
             if (!$ret || self::VALUE_NULL === $ret) {
                 // Restore null placeholder else we loose conversion to false
-                // and drupal_lookup_path() would attempt saving it once again
+                // and backdrop_lookup_path() would attempt saving it once again
                 $ret = $previous;
             }
         }

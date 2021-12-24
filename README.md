@@ -54,15 +54,15 @@ Quick setup
 -----------
 
 Here is a simple yet working easy way to setup the module.
-This method will allow Drupal to use Redis for all caches and locks
+This method will allow Backdrop to use Redis for all caches and locks
 and path alias cache replacement.
 
-  $conf['redis_client_interface'] = 'PhpRedis'; // Can be "Predis".
-  $conf['redis_client_host']      = '1.2.3.4';  // Your Redis instance hostname.
-  $conf['lock_inc']               = 'sites/all/modules/redis/redis.lock.inc';
-  $conf['path_inc']               = 'sites/all/modules/redis/redis.path.inc';
-  $conf['cache_backends'][]       = 'sites/all/modules/redis/redis.autoload.inc';
-  $conf['cache_default_class']    = 'Redis_Cache';
+  $settings['redis_client_interface'] = 'PhpRedis'; // Can be "Predis".
+  $settings['redis_client_host']      = '1.2.3.4';  // Your Redis instance hostname.
+  $settings['lock_inc']               = 'sites/all/modules/redis/redis.lock.inc';
+  $settings['path_inc']               = 'sites/all/modules/redis/redis.path.inc';
+  $settings['cache_backends'][]       = 'sites/all/modules/redis/redis.autoload.inc';
+  $settings['cache_default_class']    = 'Redis_Cache';
 
 See next chapters for more information.
 
@@ -86,19 +86,19 @@ from the module author, it should be safe to use.
 Use this cache class setting to enable compression. This will save usually
 about 80% RAM at the cost of some milliseconds server time.
 
-  $conf['cache_default_class'] = 'Redis_CacheCompressed';
+  $settings['cache_default_class'] = 'Redis_CacheCompressed';
 
 Additionnaly, you can alter the default size compression threshold, under which
 entries will not be compressed (size is in bytes, set 0 to always compress):
 
-  $conf['cache_compression_size_threshold'] = 100;
+  $settings['cache_compression_size_threshold'] = 100;
 
 You can also change the compression level, which an positive integer between
 1 and 9, 1 being the lowest but fastest compression ratio, 9 being the most
 aggressive compression but is a lot slower. From testing, setting it to the
 lower level (1) gives 80% memory usage decrease, which is more than enough.
 
-  $conf['cache_compression_ratio'] = 5;
+  $settings['cache_compression_ratio'] = 5;
 
 Please note that those settings are global and not on a cache bin basis, you can
 already control whenever the compression is to be used or not by selecting a
@@ -116,7 +116,7 @@ Choose the Redis client library to use
 
 Add into your settings.php file:
 
-  $conf['redis_client_interface']      = 'PhpRedis';
+  $settings['redis_client_interface']      = 'PhpRedis';
 
 You can replace 'PhpRedis' with 'Predis', depending on the library you chose.
 
@@ -124,51 +124,39 @@ Note that this is optional but recommended. If you don't set this variable the
 module will proceed to class lookups and attempt to choose the best client
 available, having always a preference for the Predis one.
 
-Tell Drupal to use the cache backend
+Tell Backdrop to use the cache backend
 ------------------------------------
 
 Usual cache backend configuration, as follows, to add into your settings.php
 file like any other backend:
 
-  $conf['cache_backends'][]            = 'sites/all/modules/redis/redis.autoload.inc';
-  $conf['cache_class_cache']           = 'Redis_Cache';
-  $conf['cache_class_cache_menu']      = 'Redis_Cache';
-  $conf['cache_class_cache_bootstrap'] = 'Redis_Cache';
+  $settings['cache_backends'][]            = 'sites/all/modules/redis/redis.autoload.inc';
+  $settings['cache_class_cache']           = 'Redis_Cache';
+  $settings['cache_class_cache_menu']      = 'Redis_Cache';
+  $settings['cache_class_cache_bootstrap'] = 'Redis_Cache';
   // ... Any other bins.
 
-Tell Drupal to use the lock backend
+Tell Backdrop to use the lock backend
 -----------------------------------
 
 Usual lock backend override, update you settings.php file as this:
 
-  $conf['lock_inc'] = 'sites/all/modules/redis/redis.lock.inc';
+  $settings['lock_inc'] = 'sites/all/modules/redis/redis.lock.inc';
 
-Tell Drupal to use the path alias backend
+Tell Backdrop to use the path alias backend
 -----------------------------------------
 
 Usual path backend override, update you settings.php file as this:
 
-  $conf['path_inc'] = 'sites/all/modules/redis/redis.path.inc';
+  $settings['path_inc'] = 'sites/all/modules/redis/redis.path.inc';
 
 Notice that there is an additional variable for path handling that is set
 per default which will ignore any path that is an admin path, gaining a few
 SQL queries. If you want to be able to set aliases on admin path and restore
-an almost default Drupal core behavior, you should add this line into your
+an almost default Backdrop core behavior, you should add this line into your
 settings.php file:
 
-  $conf['path_alias_admin_blacklist'] = FALSE;
-
-Drupal 6 and lock backend
--------------------------
-
-Considering this is a Drupal 7 module only downloading it in Drupal 6 will make
-the module UI telling you this module is unsupported yet you can use the lock
-backend on Drupal 6.
-
-Read your Drupal 6 core documentation and use the redis.lock.inc file as
-lock_inc replacement the same way its being done for Drupal 7 and it should
-work. Note that this is untested by the module maintainer (feedback will be
-greatly appreciated).
+  $settings['path_alias_admin_blacklist'] = FALSE;
 
 Common settings
 ===============
@@ -178,7 +166,7 @@ Connect throught a UNIX socket
 
 All you have to do is specify this line:
 
-  $conf['redis_client_socket'] = '/some/path/redis.sock';
+  $settings['redis_client_socket'] = '/some/path/redis.sock';
 
 Both drivers support it.
 
@@ -187,8 +175,8 @@ Connect to a remote host
 
 If your Redis instance is remote, you can use this syntax:
 
-  $conf['redis_client_host'] = '1.2.3.4';
-  $conf['redis_client_port'] = 1234;
+  $settings['redis_client_host'] = '1.2.3.4';
+  $settings['redis_client_port'] = 1234;
 
 Port is optional, default is 6379 (default Redis port).
 
@@ -201,7 +189,7 @@ this one if nothing is specified.
 Depending on you OS or OS distribution, you might have numerous database. To
 use one in particular, just add to your settings.php file:
 
-  $conf['redis_client_base'] = 12;
+  $settings['redis_client_base'] = 12;
 
 Please note that if you are working in shard mode, you should never set this
 variable.
@@ -211,14 +199,14 @@ Connection to a password protected instance
 
 If you are using a password protected instance, specify the password this way:
 
-  $conf['redis_client_password'] = "mypassword";
+  $settings['redis_client_password'] = "mypassword";
 
 Depending on the backend, using a wrong auth will behave differently:
 
- - Predis will throw an exception and make Drupal fail during early boostrap.
+ - Predis will throw an exception and make Backdrop fail during early boostrap.
 
  - PhpRedis will make Redis calls silent and creates some PHP warnings, thus
-   Drupal will behave as if it was running with a null cache backend (no cache
+   Backdrop will behave as if it was running with a null cache backend (no cache
    at all).
 
 Prefixing site cache entries (avoiding sites name collision)
@@ -238,12 +226,12 @@ backends that support this feature. This variable name is 'cache_prefix'.
 This variable is polymorphic, the simplest version is to provide a raw string
 that will be the default prefix for all cache bins:
 
-  $conf['cache_prefix'] = 'mysite_';
+  $settings['cache_prefix'] = 'mysite_';
 
 Alternatively, to provide the same functionality, you can provide the variable
 as an array:
 
-  $conf['cache_prefix']['default'] = 'mysite_';
+  $settings['cache_prefix']['default'] = 'mysite_';
 
 This allows you to provide different prefix depending on the bin name. Common
 usage is that each key inside the 'cache_prefix' array is a bin name, the value
@@ -258,14 +246,14 @@ bin.
 Here is a complex sample:
 
   // Default behavior for all bins, prefix is 'mysite_'.
-  $conf['cache_prefix']['default'] = 'mysite_';
+  $settings['cache_prefix']['default'] = 'mysite_';
 
   // Set no prefix explicitely for 'cache' and 'cache_bootstrap' bins.
-  $conf['cache_prefix']['cache'] = FALSE;
-  $conf['cache_prefix']['cache_bootstrap'] = FALSE;
+  $settings['cache_prefix']['cache'] = FALSE;
+  $settings['cache_prefix']['cache_bootstrap'] = FALSE;
 
   // Set another prefix for 'cache_menu' bin.
-  $conf['cache_prefix']['cache_menu'] = 'menumysite_';
+  $settings['cache_prefix']['cache_menu'] = 'menumysite_';
 
 Note that this last notice is Redis only specific, because per default Redis
 server will not namespace data, thus sharing an instance for multiple sites
@@ -291,7 +279,7 @@ keep stalled entries into its database forever.
 
 In order to enable the sharded mode, set into your settings.php file:
 
-    $conf['redis_flush_mode'] = 3;
+    $settings['redis_flush_mode'] = 3;
 
 Please note that the value 3 is there to keep backward compatibility with
 older versions of the Redis module and will not change.
@@ -308,7 +296,7 @@ Whe using this module with sharding mode you may have a sharding proxy able to
 do command pipelining. If that is the case, you should switch to "sharding with
 pipelining" mode instead:
 
-    $conf['redis_flush_mode'] = 4;
+    $settings['redis_flush_mode'] = 4;
 
 Note that if you use the sharding mode because you use an older version of the
 Redis server, you should always use this mode to ensure the best performances.
@@ -343,18 +331,18 @@ the default one:
     // Make CACHE_PERMANENT items being permanent once again
     // 0 is a special value usable for all bins to explicitely tell the
     // cache items will not be volatile in Redis.
-    $conf['redis_perm_ttl'] = 0;
+    $settings['redis_perm_ttl'] = 0;
 
     // Make them being volatile with a default lifetime of 1 year.
-    $conf['redis_perm_ttl'] = "1 year";
+    $settings['redis_perm_ttl'] = "1 year";
 
     // You can override on a per-bin basis;
     // For example make cached field values live only 3 monthes:
-    $conf['redis_perm_ttl_cache_field'] = "3 months";
+    $settings['redis_perm_ttl_cache_field'] = "3 months";
 
     // But you can also put a timestamp in there; In this case the
     // value must be a STRICTLY TYPED integer:
-    $conf['redis_perm_ttl_cache_field'] = 2592000; // 30 days.
+    $settings['redis_perm_ttl_cache_field'] = 2592000; // 30 days.
 
 Time interval string will be parsed using DateInterval::createFromDateString
 please refer to its documentation:
@@ -362,7 +350,7 @@ please refer to its documentation:
     http://www.php.net/manual/en/dateinterval.createfromdatestring.php
 
 Please also be careful about the fact that those settings are overriden by
-the 'cache_lifetime' Drupal variable, which should always be set to 0.
+the 'cache_lifetime' Backdrop variable, which should always be set to 0.
 Moreover, this setting will affect all cache entries without exception so
 be careful and never set values too low if you don't want this setting to
 override default expire value given by modules on temporary cache entries.
@@ -386,19 +374,19 @@ in runtime errors.
 If you want to change the queue driver system wide, set this into your
 setting.php file:
 
-    $conf['queue_default_class'] = 'Redis_Queue';
-    $conf['queue_default_reliable_class'] = 'Redis_Queue';
+    $settings['queue_default_class'] = 'Redis_Queue';
+    $settings['queue_default_reliable_class'] = 'Redis_Queue';
 
 Note that some queue implementations such as the batch queue are hardcoded
-within Drupal and will always use a database dependent implementation.
+within Backdrop and will always use a database dependent implementation.
 
 If you need to proceed with finer tuning, you can set a per-queue class in
 such way:
 
-    $conf['queue_class_NAME'] = 'Redis_Queue';
+    $settings['queue_class_NAME'] = 'Redis_Queue';
 
 Where NAME is the arbitrary module given queue name, used as first parameter
-for the method DrupalQueue::get().
+for the method BackdropQueue::get().
 
 THIS IS STILL VERY EXPERIMENTAL. The queue should work without any problems
 except it does not implement the item lease time correctly, this means that
@@ -462,13 +450,3 @@ Queue
 
 Queue is still in development. There might be problems in the long term for
 this component in sharded environments.
-
-Testing
-=======
-
-Due to Drupal unit testing API being incredibly stupid, the unit tests can only
-work with PHP >=5.3 while the module will work gracefully with PHP 5.2 (at least
-using the PhpRedis client).
-
-I did not find any hint about making tests being configurable, so per default
-the tested Redis server must always be on localhost with default configuration.

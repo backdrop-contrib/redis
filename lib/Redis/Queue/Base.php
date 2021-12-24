@@ -35,7 +35,7 @@
  * and return values.
  */
 abstract class Redis_Queue_Base extends Redis_AbstractBackend implements
-    DrupalReliableQueueInterface
+    BackdropReliableQueueInterface
 {
     /**
      * Key prefix for queue data.
@@ -86,8 +86,8 @@ abstract class Redis_Queue_Base extends Redis_AbstractBackend implements
     /**
      * Default contructor
      *
-     * Beware that DrupalQueueInterface does not defines the __construct
-     * method in the interface yet is being used from DrupalQueue::get()
+     * Beware that BackdropQueueInterface does not defines the __construct
+     * method in the interface yet is being used from BackdropQueue::get()
      *
      * @param mixed $client
      * @param string $name

@@ -1,6 +1,6 @@
 <?php
 
-class Redis_Tests_Admin_VariableTestCase extends DrupalWebTestCase
+class Redis_Tests_Admin_VariableTestCase extends BackdropWebTestCase
 {
     public static function getInfo()
     {
@@ -20,41 +20,41 @@ class Redis_Tests_Admin_VariableTestCase extends DrupalWebTestCase
 
     public function testSave()
     {
-        $this->adminUser = $this->drupalCreateUser(array('administer site configuration'));
-        $this->drupalLogin($this->adminUser);
+        $this->adminUser = $this->backdropCreateUser(array('administer site configuration'));
+        $this->backdropLogin($this->adminUser);
 
         // Tests port is an int.
-        $this->drupalGet('admin/config/development/performance/redis');
+        $this->backdropGet('admin/config/development/performance/redis');
         $edit = array(
             'redis_client_base'      => '',
             'redis_client_port'      => '1234',
             'redis_client_host'      => 'localhost',
             'redis_client_interface' => '',
         );
-        $this->drupalPost('admin/config/development/performance/redis', $edit, t('Save configuration'));
+        $this->backdropPost('admin/config/development/performance/redis', $edit, t('Save configuration'));
 
         // Force variable cache to refresh.
         $test = variable_initialize();
-        $conf = &$GLOBALS['conf'];
+        $settings = &$GLOBALS['conf'];
 
-        $this->assertFalse(array_key_exists('redis_client_base', $conf), "Empty int value has been removed");
-        $this->assertFalse(array_key_exists('redis_client_interface', $conf), "Empty string value has been removed");
-        $this->assertIdentical($conf['redis_client_port'], 1234, "Saved int is an int");
-        $this->assertIdentical($conf['redis_client_host'], 'localhost', "Saved string is a string");
+        $this->assertFalse(array_key_exists('redis_client_base', $settings), "Empty int value has been removed");
+        $this->assertFalse(array_key_exists('redis_client_interface', $settings), "Empty string value has been removed");
+        $this->assertIdentical($settings['redis_client_port'], 1234, "Saved int is an int");
+        $this->assertIdentical($settings['redis_client_host'], 'localhost', "Saved string is a string");
 
-        $this->drupalGet('admin/config/development/performance/redis');
+        $this->backdropGet('admin/config/development/performance/redis');
         $edit = array(
             'redis_client_base'      => '0',
             'redis_client_port'      => '1234',
             'redis_client_host'      => 'localhost',
             'redis_client_interface' => '',
         );
-        $this->drupalPost('admin/config/development/performance/redis', $edit, t('Save configuration'));
+        $this->backdropPost('admin/config/development/performance/redis', $edit, t('Save configuration'));
 
         // Force variable cache to refresh.
         $test = variable_initialize();
-        $conf = &$GLOBALS['conf'];
+        $settings = &$GLOBALS['conf'];
 
-        $this->assertIdentical($conf['redis_client_base'], 0, "Saved 0 valueed int is an int");
+        $this->assertIdentical($settings['redis_client_base'], 0, "Saved 0 valueed int is an int");
     }
 }
