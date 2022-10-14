@@ -30,21 +30,21 @@ Download and install library
 
 Once done, you either have to clone it into:
 
-  sites/all/libraries/predis
+  libraries/predis
 
 So that you have the following directory tree:
 
-  sites/all/libraries/predis/src/ # Where the PHP code stands
+  libraries/predis/src/ # Where the PHP code stands
 
 Or, any other place in order to share it:
 For example, from your install profiles libraries folder:
 
   profiles/example/libraries/predis
 
-If you choose this solution, you have to alter a bit your $conf array into
+If you choose this solution, you have to alter a bit your $settings array into
 the settings.php file as this:
 
-  define('PREDIS_BASE_PATH', BACKDROP_ROOT . '/profiles/example/libraries/predis/');
+    define('PREDIS_BASE_PATH', BACKDROP_ROOT . '/profiles/example/libraries/predis/');
 
 Connect to a remote host and database
 -------------------------------------
