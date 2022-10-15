@@ -15,14 +15,14 @@ class Redis_CacheCompressed extends Redis_Cache implements BackdropCacheInterfac
     {
         parent::__construct($bin);
 
-        $this->compressionSizeThreshold = (int)variable_get('cache_compression_size_threshold', 100);
+        $this->compressionSizeThreshold = (int) settings_get('redis_cache_compression_size_threshold', 100);
         if ($this->compressionSizeThreshold < 0) {
             trigger_error('cache_compression_size_threshold must be 0 or a positive integer, negative value found, switching back to default 100', E_USER_WARNING);
             $this->compressionSizeThreshold = 100;
         }
 
         // Minimum compression level (1) has good ratio in low time.
-        $this->compressionRatio = (int)variable_get('cache_compression_ratio', 1);
+        $this->compressionRatio = (int) settings_get('redis_cache_compression_ratio', 1);
         if ($this->compressionRatio < 1 || 9 < $this->compressionRatio) {
             trigger_error('cache_compression_ratio must be between 1 and 9, out of bounds value found, switching back to default 1', E_USER_WARNING);
             $this->compressionRatio = 1;

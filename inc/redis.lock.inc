@@ -7,7 +7,7 @@
  * Do not use this file directly, it will be included by the backend specific
  * implementation when added to settings.php file.
  *
- * See README.txt file for details.
+ * See README.md file for details.
  */
 
 // Include our own autoloader to ensure classes to be there.
@@ -15,18 +15,12 @@
 require_once dirname(__FILE__) . '/../redis.autoload.inc';
 
 /**
- * Foo function, keeping it for API consistency (Drupal 7).
+ * This function is here for API consistency and should not be used directly.
  */
 function lock_initialize() { }
 
 /**
- * Foo function, keeping it for API consistency (Drupal 6).
- */
-function lock_init() { }
-
-/**
- * Foo function, keeping it for API consistency.
- * Some insane people may actually use it.
+ * This function is here for API consistency and should not be used directly.
  */
 function _lock_id() {
   return Redis_Lock::getBackend()->getLockId();
@@ -50,14 +44,4 @@ function lock_release($name) {
 
 function lock_release_all($lock_id = NULL) {
   return Redis_Lock::getBackend()->lockReleaseAll($lock_id);
-}
-
-// Since D6 doesn't have the backdrop_register_shutdown_function
-// that is called in lib/Redis/Lock/Backend/Default.php define
-// the wrapper here.
-if (!function_exists('backdrop_register_shutdown_function')) {
-  function backdrop_register_shutdown_function() {
-    $args = func_get_args();
-    call_user_func_array('register_shutdown_function', $args);
-  }
 }

@@ -63,7 +63,7 @@ class Redis_Cache implements BackdropCacheInterface
     protected $bin;
 
     /**
-     * When the global 'cache_lifetime' Backdrop variable is set to a value, the
+     * When the config entry 'cache_lifetime' in 'system.core' is set to a value, the
      * cache backends should not expire temporary entries by themselves per
      * Backdrop signature. Volatile items will be dropped accordingly to their
      * set lifetime.
@@ -186,14 +186,14 @@ class Redis_Cache implements BackdropCacheInterface
      */
     public function refreshCapabilities()
     {
-        if (0 < variable_get('cache_lifetime', 0)) {
+        if (0 < config_get('system.core', 'cache_lifetime')) {
             // Per Backdrop default behavior, when the 'cache_lifetime' variable
             // is set we must not flush any temporary items since they have a
             // life time.
             $this->allowTemporaryFlush = false;
         }
 
-        if (null !== ($mode = variable_get('redis_flush_mode', null))) {
+        if (null !== ($mode = config_get('redis.settings', 'redis_flush_mode'))) {
             $mode = (int)$mode;
         } else {
             $mode = self::FLUSH_NORMAL;
@@ -208,11 +208,16 @@ class Redis_Cache implements BackdropCacheInterface
      */
     protected function refreshPermTtl()
     {
-        $ttl = null;
-        if (null === ($ttl = variable_get('redis_perm_ttl_' . $this->bin, null))) {
-            if (null === ($ttl = variable_get('redis_perm_ttl', null))) {
-                $ttl = self::LIFETIME_PERM_DEFAULT;
-            }
+        global $settings;
+
+        if (isset($settings['redis_perm_ttl' . $this->bin])) {
+          $ttl = $settings['redis_perm_ttl' . $this->bin];
+        }
+        else if (isset($settings['redis_perm_ttl'])) {
+          $ttl = $settings['redis_perm_ttl'];
+        }
+        else {
+          $ttl = self::LIFETIME_PERM_DEFAULT;
         }
         if ($ttl === (int)$ttl) {
             $this->permTtl = $ttl;
@@ -235,7 +240,7 @@ class Redis_Cache implements BackdropCacheInterface
     {
         // And now cache lifetime. Be aware we exclude negative values
         // considering those are Backdrop misconfiguration.
-        $maxTtl = variable_get('cache_lifetime', 0);
+        $maxTtl = config_get('system.core', 'cache_lifetime');
         if (0 < $maxTtl) {
             if ($maxTtl < $this->permTtl) {
                 $this->maxTtl = $maxTtl;

@@ -27,7 +27,7 @@ abstract class Redis_Tests_AbstractUnitTestCase extends BackdropUnitTestCase
         spl_autoload_register(function ($className) {
             $parts = explode('_', $className);
             if ('Redis' === $parts[0]) {
-                $filename = __DIR__ . '/../lib/' . implode('/', $parts) . '.php';
+                $filename = __DIR__ . '/../../' . implode('/', $parts) . '.php';
                 return (bool) include_once $filename;
             }
             return false;
@@ -42,8 +42,8 @@ abstract class Redis_Tests_AbstractUnitTestCase extends BackdropUnitTestCase
      * @var array
      */
     private $originalConf = array(
-        'cache_lifetime'          => null,
-        'cache_prefix'            => null,
+//        'cache_lifetime'          => null,
+//        'cache_prefix'            => null,
         'redis_client_interface'  => null,
         'redis_eval_enabled'      => null,
         'redis_flush_mode'        => null,
@@ -73,7 +73,7 @@ abstract class Redis_Tests_AbstractUnitTestCase extends BackdropUnitTestCase
      */
     final private function restoreBackdropEnvironment()
     {
-        $GLOBALS['conf'] = $this->originalConf + $GLOBALS['conf'];
+        $GLOBALS['settings'] = $this->originalConf + $GLOBALS['settings'];
     }
 
     /**

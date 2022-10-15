@@ -1,9 +1,9 @@
 {
     "_config_name": "redis.settings",
     "_module": "redis",
-    "redis_client_host": "NULL",
-    "redis_client_port": "NULL",
-    "redis_client_socket": "NULL",
-    "redis_client_base": "NULL",
+    "redis_client_host": "",
+    "redis_client_port": "",
+    "redis_client_socket": "",
+    "redis_client_base": "",
     "redis_client_interface": ""
 }

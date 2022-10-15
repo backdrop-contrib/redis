@@ -61,7 +61,7 @@ abstract class Redis_Tests_Cache_FixesUnitTestCase extends Redis_Tests_AbstractU
         $this->assertIdentical('foo', $data->data);
 
         // Expiring entry with permanent default lifetime.
-        $settings['cache_lifetime'] = 0;
+        config_set('system.core', 'cache_lifetime', 0);
         $backend->set('test2', 'bar', CACHE_TEMPORARY);
         sleep(2);
         $data = $backend->get('test2');
@@ -87,7 +87,7 @@ abstract class Redis_Tests_Cache_FixesUnitTestCase extends Redis_Tests_AbstractU
         $this->assertEqual(false, $data);
 
         // Expiring entry with short default lifetime.
-        $settings['cache_lifetime'] = 1;
+        config_set('system.core', 'cache_lifetime', 1);
         $backend->refreshMaxTtl();
         $backend->set('test5', 'foobaz', CACHE_TEMPORARY);
         $data = $backend->get('test5');
