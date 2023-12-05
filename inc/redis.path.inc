@@ -302,7 +302,7 @@ function backdrop_is_front_page() {
   if (!isset($is_front_page)) {
     // As backdrop_path_initialize updates $_GET['q'] with the 'site_frontpage' path,
     // we can check it against the 'site_frontpage' variable.
-    $is_front_page = ($_GET['q'] == config_get('system.performance', 'site_frontpage'));
+    $is_front_page = ($_GET['q'] == config_get('system.core', 'site_frontpage'));
   }
 
   return $is_front_page;
@@ -333,7 +333,7 @@ function backdrop_match_path($path, $patterns) {
     $replacements = array(
       '|',
       '.*',
-      '\1' . preg_quote(config_get('system.performance', 'site_frontpage'), '/') . '\2',
+      '\1' . preg_quote(config_get('system.core', 'site_frontpage'), '/') . '\2',
     );
     $patterns_quoted = preg_quote($patterns, '/');
     $regexps[$patterns] = '/^(' . preg_replace($to_replace, $replacements, $patterns_quoted) . ')$/';
