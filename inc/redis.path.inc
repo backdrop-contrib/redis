@@ -477,10 +477,10 @@ function path_load_multiple(array $keys, $field, $langcode) {
  *   - source: The internal system path.
  *   - alias: The URL alias.
  *   - pid: (optional) Unique path alias identifier.
- *   - language: (optional) The language of the alias.
+ *   - langcode: (optional) The language of the alias.
  */
 function path_save(&$path) {
-  $path += array('language' => LANGUAGE_NONE);
+  $path += array('langcode' => LANGUAGE_NONE);
 
   // Load the stored alias, if any.
   if (!empty($path['pid']) && !isset($path['original'])) {
@@ -496,9 +496,9 @@ function path_save(&$path) {
     module_invoke_all('path_update', $path);
   }
   if (!empty($path['original'])) {
-    redis_path_backend_get()->deleteAlias($path['original']['source'], $path['original']['alias'], $path['original']['language']);
+    redis_path_backend_get()->deleteAlias($path['original']['source'], $path['original']['alias'], $path['original']['langcode']);
   }
-  redis_path_backend_get()->saveAlias($path['source'], $path['alias'], $path['language']);
+  redis_path_backend_get()->saveAlias($path['source'], $path['alias'], $path['langcode']);
 
   // Clear internal properties.
   unset($path['original']);
@@ -524,7 +524,7 @@ function path_delete($criteria) {
   }
   $query->execute();
   module_invoke_all('path_delete', $path);
-  redis_path_backend_get()->deleteAlias($path['source'], $path['alias'], $path['language']);
+  redis_path_backend_get()->deleteAlias($path['source'], $path['alias'], $path['langcode']);
   backdrop_clear_path_cache($path['source']);
 }
 
