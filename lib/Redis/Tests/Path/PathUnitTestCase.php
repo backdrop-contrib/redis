@@ -25,7 +25,7 @@ abstract class Redis_Tests_Path_PathUnitTestCase extends Redis_Tests_AbstractUni
         }
 
         $className = Redis_Client::getClass(Redis_Client::REDIS_IMPL_PATH);
-        $hashLookup = new $className(Redis_Client::getClient(), 'path', Redis_Client::getDefaultPrefix('path'));
+        $hashLookup = new $className(Redis_Client::getClient(), 'cache_path', Redis_Client::getDefaultPrefix('cache_path'));
 
         return $hashLookup;
     }
