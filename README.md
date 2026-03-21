@@ -468,6 +468,7 @@ Current Maintainers
 -------------------
 
 - [Joseph Flatt](https://github.com/hosef/)
+- [Laryn Kragt Bakker](https://github.com/laryn)
 
 Credits
 -------
