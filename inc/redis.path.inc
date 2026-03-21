@@ -13,12 +13,12 @@
  * @return Redis_Path_HashLookupInterface
  */
 function redis_path_backend_get() {
-  $hashLookup = &backdrop_static(__FUNCTION__, null);
+  $hashLookup = &backdrop_static(__FUNCTION__, NULL);
 
-  if (null === $hashLookup) {
+  if (NULL === $hashLookup) {
     try {
       $className = Redis_Client::getClass(Redis_Client::REDIS_IMPL_PATH);
-      $hashLookup = new $className(Redis_Client::getClient(), 'path', Redis_Client::getDefaultPrefix('path'));
+      $hashLookup = new $className(Redis_Client::getClient(), 'cache_path', Redis_Client::getDefaultPrefix('cache_path'));
     }
     catch (Exception $e) {
       $hashLookup = new Redis_Path_NullHashLookup();
@@ -66,14 +66,14 @@ function backdrop_lookup_path($action, $path = '', $path_language = NULL) {
 
   static $cache, $denyAdmin;
 
-  if (null === $cache) {
+  if (NULL === $cache) {
     // TODO This variable was probably removed in Backdrop without replacement.
     $cache = array('whitelist' => variable_get('path_alias_whitelist'));
-    if (null === $cache['whitelist']) {
+    if (NULL === $cache['whitelist']) {
       $cache['whitelist'] = backdrop_path_alias_whitelist_rebuild();
     }
     // TODO This variable was probably removed in Backdrop without replacement.
-    $denyAdmin = (bool) variable_get('path_alias_admin_blacklist', true);
+    $denyAdmin = (bool) variable_get('path_alias_admin_blacklist', TRUE);
   }
 
   // If no language is explicitly specified we default to the current URL
@@ -92,7 +92,7 @@ function backdrop_lookup_path($action, $path = '', $path_language = NULL) {
     $path = strtolower(trim($path));
   }
 
-  $ret = null;
+  $ret = NULL;
   $hashLookup = redis_path_backend_get();
 
   switch ($action) {
@@ -104,21 +104,21 @@ function backdrop_lookup_path($action, $path = '', $path_language = NULL) {
 
     case 'alias':
       if (empty($path)) {
-        return false;
+        return FALSE;
       }
       // Check the path whitelist, if the top_level part before the first /
       // is not in the list, then there is no need to do anything further,
       // it is not in the database.
       if (!isset($cache['whitelist'][strtok($path, '/')])) {
-        return false;
+        return FALSE;
       }
       // Deny admin paths.
       if ($denyAdmin && path_is_admin($path)) {
-        return false;
+        return FALSE;
       }
 
       $ret = $hashLookup->lookupAlias($path, $path_language);
-      if (null === $ret) {
+      if (NULL === $ret) {
         // Original Backdrop algorithm.
         // This will also update the $path_language variable so Redis will store
         // the right language (keeps track of LANGUAGE_NONE or specific language
@@ -141,9 +141,9 @@ function backdrop_lookup_path($action, $path = '', $path_language = NULL) {
             ':language' => array($path_language, LANGUAGE_NONE),
           ))->fetch(PDO::FETCH_NUM);
         }
-        // Getting here with a value means we need to cache it
+        // Getting here with a value means we need to cache it.
         if (empty($ret)) {
-          $ret = false;
+          $ret = FALSE;
         }
         $hashLookup->saveAlias($path, $ret, $path_language);
       }
@@ -153,16 +153,16 @@ function backdrop_lookup_path($action, $path = '', $path_language = NULL) {
 
     case 'source':
       if (empty($path)) {
-        return false;
+        return FALSE;
       }
       // Even thought given entry is an alias, if it conflicts with an
       // existing admin path just deny any lookup.
       if ($denyAdmin && path_is_admin($path)) {
-        return false;
+        return FALSE;
       }
 
       $ret = $hashLookup->lookupSource($path, $path_language);
-      if (null === $ret) {
+      if (NULL === $ret) {
         // Original Backdrop algorithm.
         // This will also update the $path_language variable so Redis will store
         // the right language (keeps track of LANGUAGE_NONE or specific language
@@ -185,9 +185,9 @@ function backdrop_lookup_path($action, $path = '', $path_language = NULL) {
             ':language' => array($path_language, LANGUAGE_NONE),
           ))->fetch(PDO::FETCH_NUM);
         }
-        // Getting here with a value means we need to cache it
+        // Getting here with a value means we need to cache it.
         if (empty($ret)) {
-          $ret = false;
+          $ret = FALSE;
         }
         else {
           $ret = strtolower(trim($ret));
@@ -326,8 +326,8 @@ function backdrop_match_path($path, $patterns) {
     // Convert path settings to a regular expression.
     // Therefore replace newlines with a logical or, /* with asterisks and the <front> with the frontpage.
     $to_replace = array(
-      '/(\r\n?|\n)/', // newlines
-      '/\\\\\*/', // asterisks
+      '/(\r\n?|\n)/', // Newlines.
+      '/\\\\\*/', // Asterisks.
       '/(^|\|)\\\\<front\\\\>($|\|)/', // <front>
     );
     $replacements = array(
