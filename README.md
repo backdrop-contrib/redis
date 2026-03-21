@@ -85,7 +85,7 @@ Advanced configuration
 Use the compressed cache
 ------------------------
 
-Please note this is (for now) an experimental feature. As a personnal note
+Please note this is (for now) an experimental feature. As a personal note
 from the module author, it should be safe to use.
 
 Use this cache class setting to enable compression. This will save usually
@@ -127,7 +127,7 @@ You can replace 'PhpRedis' with 'Predis', depending on the library you chose.
 
 Note that this is optional but recommended. If you do not set this variable, the
 module will proceed to class lookups and attempt to choose the best client
-available (with a preference for the Predis one).
+available (with a preference for the Predis client library).
 
 Tell Backdrop to use the cache backend
 ------------------------------------
