@@ -10,8 +10,20 @@
  */
 function redis_settings_form($form, &$form_state) {
   $config = config('redis.settings');
-
   $form['#config'] = 'redis.settings';
+
+  try {
+    Redis_Client::getClient();
+    $message = '<p>' . t("Connected to the Redis server using the <em>@name</em> library.", array(
+      '@name' => Redis_Client::getClientInterfaceName(),
+    )) . '</p>';
+    $message_type = 'status';
+  }
+  catch (Exception $e) {
+    $message = '<p>' . t("Not connected to the Redis server.") . '</p>';
+    $message_type = 'warning';
+  }
+  backdrop_set_message($message, $message_type);
   $form['connection'] = array(
     '#type' => 'fieldset',
     '#title' => t("Connection information"),
@@ -19,7 +31,7 @@ function redis_settings_form($form, &$form_state) {
     '#collapsed' => FALSE,
   );
   $form['connection']['description'] = array(
-    '#markup' => t('These settings are used to setup the connection to the Redis server. They will be ignored if the settinsgs are overridden in settings.php.'),
+    '#markup' => t('These settings are used to setup the connection to the Redis server. They will be ignored if the settings are overridden in your settings file.'),
   );
 
   $form['connection']['scheme'] = array(
