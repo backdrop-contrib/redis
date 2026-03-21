@@ -66,8 +66,8 @@ and path alias cache replacement.
 
     $settings['redis_client_interface'] = 'PhpRedis'; // Can be "Predis".
     $settings['redis_client_host']      = '1.2.3.4';  // Your Rdis instance hostname or IP address.
-    $settings['lock_inc']               = 'modules/redis/redis.lock.inc';
-    $settings['path_inc']               = 'modules/redis/redis.path.inc';
+    $settings['lock_inc']               = 'modules/redis/inc/redis.lock.inc';
+    $settings['path_inc']               = 'modules/redis/inc/redis.path.inc';
     $settings['cache_backends'][]       = 'modules/redis/redis.autoload.inc';
     $settings['cache_default_class']    = 'Redis_Cache';
 
@@ -146,7 +146,7 @@ Tell Backdrop to use the lock backend
 
 To use the standard lock backend override, update your settings.php file with:
 
-    $settings['lock_inc'] = 'modules/redis/redis.lock.inc';
+    $settings['lock_inc'] = 'modules/redis/inc/redis.lock.inc';
 
 Tell Backdrop to use the path alias backend
 -----------------------------------------
@@ -154,7 +154,7 @@ Tell Backdrop to use the path alias backend
 Too use the standard path backend override, update your settings.php file
 with:
 
-    $settings['path_inc'] = 'modules/redis/redis.path.inc';
+    $settings['path_inc'] = 'modules/redis/inc/redis.path.inc';
 
 Notice that there is an additional variable for path handling that is set
 per default, which will ignore any path that is an admin path (which gains a few
