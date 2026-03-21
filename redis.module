@@ -17,9 +17,11 @@ require_once dirname(__FILE__) . '/redis.autoload.inc';
  */
 function redis_menu() {
   $items = array();
-  $items['admin/config/development/performance/cache'] = array(
-    'title' => "Cache",
+  $items['admin/config/development/performance/default'] = array(
+    'title' => "Performance",
     'type' => MENU_DEFAULT_LOCAL_TASK,
+    'file path' => backdrop_get_path('module', 'system'),
+    'weight' => -10,
   );
   $items['admin/config/development/performance/redis'] = array(
     'title' => "Redis",
@@ -28,6 +30,7 @@ function redis_menu() {
     'access arguments' => array('administer site configuration'),
     'type' => MENU_LOCAL_TASK,
     'file' => 'redis.admin.inc',
+    'weight' => 1,
   );
   return $items;
 }
