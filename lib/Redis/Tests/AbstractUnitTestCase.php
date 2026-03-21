@@ -53,7 +53,7 @@ abstract class Redis_Tests_AbstractUnitTestCase extends BackdropUnitTestCase
     /**
      * Prepare Backdrop environmment for testing
      */
-    final private function prepareBackdropEnvironment()
+    private function prepareBackdropEnvironment()
     {
         // Site on which the tests are running may define this variable
         // in their own settings.php file case in which it will be merged
@@ -71,7 +71,7 @@ abstract class Redis_Tests_AbstractUnitTestCase extends BackdropUnitTestCase
     /**
      * Restore Backdrop environment after testing.
      */
-    final private function restoreBackdropEnvironment()
+    private function restoreBackdropEnvironment()
     {
         $GLOBALS['settings'] = $this->originalConf + $GLOBALS['settings'];
     }
@@ -79,7 +79,7 @@ abstract class Redis_Tests_AbstractUnitTestCase extends BackdropUnitTestCase
     /**
      * Prepare client manager
      */
-    final private function prepareClientManager()
+    private function prepareClientManager()
     {
         $interface = $this->getClientInterface();
 
@@ -94,7 +94,7 @@ abstract class Redis_Tests_AbstractUnitTestCase extends BackdropUnitTestCase
     /**
      * Restore client manager
      */
-    final private function restoreClientManager()
+    private function restoreClientManager()
     {
         Redis_Client::reset();
     }
