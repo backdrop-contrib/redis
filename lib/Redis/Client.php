@@ -67,7 +67,7 @@ class Redis_Client
         // conf_path(), as settings.php might be modifying what database to
         // connect to. To mirror what core does with database caching we use
         // the DB credentials to inform our cache key.
-      if (null === self::$globalPrefix) {
+      if (NULL === self::$globalPrefix) {
             require_once BACKDROP_ROOT . '/core/includes/database/database.inc';
             $dbInfo = Database::getConnectionInfo();
             $active = $dbInfo['default'];
@@ -84,20 +84,20 @@ class Redis_Client
      *
      * @return string
      */
-    static public function getDefaultPrefix($namespace = null)
+    static public function getDefaultPrefix(?string $namespace = NULL)
     {
-        $ret = null;
+        $ret = NULL;
 
         if (!empty($GLOBALS['backdrop_test_info']['test_run_id'])) {
             $ret = $GLOBALS['backdrop_test_info']['test_run_id'];
         } else {
-            $prefixes = settings_get('redis_prefix', null);
+            $prefixes = settings_get('redis_prefix', NULL);
 
             if (is_string($prefixes)) {
                 // Variable can be a string which then considered as a default
                 // behavior.
                 $ret = $prefixes;
-            } else if (null !== $namespace && isset($prefixes[$namespace])) {
+            } else if (NULL !== $namespace && isset($prefixes[$namespace])) {
                 if (false !== $prefixes[$namespace]) {
                     // If entry is set and not false an explicit prefix is set
                     // for the bin.
@@ -135,7 +135,7 @@ class Redis_Client
     {
         global $settings;
 
-        if (null === self::$manager) {
+        if (NULL === self::$manager) {
 
             $className = self::getClass(self::REDIS_IMPL_CLIENT);
             $factory = new $className();
@@ -188,7 +188,7 @@ class Redis_Client
     /**
      * For unit test use only
      */
-    static public function reset(Redis_Client_Manager $manager = null)
+    static public function reset(?Redis_Client_Manager $manager = NULL)
     {
         self::$manager = $manager;
     }
