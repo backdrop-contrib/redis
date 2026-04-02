@@ -285,7 +285,7 @@ keep stalled entries into its database forever.
 
 In order to enable the sharded mode, set into your settings.php file:
 
-    $settings['redis_flush_mode'] = 3;
+    $config['redis.settings']['redis_flush_mode'] = 3;
 
 Please note that the value 3 is there to keep backward compatibility with
 older versions of the Redis module and will not change.
@@ -302,7 +302,7 @@ When using this module with sharding mode you may have a sharding proxy able to
 do command pipelining. If that is the case, you should switch to "sharding with
 pipelining" mode instead:
 
-    $settings['redis_flush_mode'] = 4;
+    $config['redis.settings']['redis_flush_mode'] = 4;
 
 Note that if you use the sharding mode because you use an older version of the
 Redis server, you should always use this mode to ensure the best performances.
