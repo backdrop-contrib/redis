@@ -215,6 +215,17 @@ Depending on the backend, using a wrong auth will behave differently:
    Backdrop will behave as if it was running with a null cache backend (no cache
    at all).
 
+Setup with Redis ACL
+--------------------
+
+Starting with redis 6.0, it is possible to use an [ACL](https://redis.io/docs/manual/security/acl/)
+system that only allows users with valid username and password to log in
+
+Specify the username and password this way:
+
+    $settings['redis_client_username'] = "myusername";
+    $settings['redis_client_password'] = "mypassword";
+
 Prefixing site cache entries (avoiding sites name collision)
 ------------------------------------------------------------
 

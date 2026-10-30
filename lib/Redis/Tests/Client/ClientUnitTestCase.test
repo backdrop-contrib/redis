@@ -44,6 +44,7 @@ class Redis_Tests_Client_UnitTestCase extends Redis_Tests_AbstractUnitTestCase
         $this->assertIdentical(Redis_Client_Manager::REDIS_DEFAULT_HOST, $defaultClient->host);
         $this->assertIdentical(Redis_Client_Manager::REDIS_DEFAULT_PORT, $defaultClient->port);
         $this->assertFalse(property_exists($defaultClient, 'base'));
+        $this->assertFalse(property_exists($defaultClient, 'username'));
         $this->assertFalse(property_exists($defaultClient, 'password'));
 
         $client = $manager->getClient('foo');

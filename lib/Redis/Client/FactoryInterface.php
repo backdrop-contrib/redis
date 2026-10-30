@@ -12,6 +12,7 @@ interface Redis_Client_FactoryInterface {
    *     - host
    *     - port
    *     - database
+   *     - username
    *     - password
    *     - socket
    *
@@ -22,10 +23,10 @@ interface Redis_Client_FactoryInterface {
 
   /**
    * Get underlaying library name used.
-   * 
+   *
    * This can be useful for contribution code that may work with only some of
    * the provided clients.
-   * 
+   *
    * @return string
    */
   public function getName();
