@@ -151,7 +151,7 @@ class Redis_Client
                 // Backward configuration compatibility with older versions
                 $serverList[Redis_Client_Manager::REALM_DEFAULT] = array();
 
-                foreach (array('host', 'port', 'base', 'password', 'socket') as $key) {
+                foreach (array('host', 'port', 'base', 'username', 'password', 'socket') as $key) {
                     if (isset($settings['redis_client_' . $key])) {
                         $serverList[Redis_Client_Manager::REALM_DEFAULT][$key] = $settings['redis_client_' . $key];
                     }

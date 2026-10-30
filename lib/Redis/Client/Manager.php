@@ -26,6 +26,11 @@ class Redis_Client_Manager
     const REDIS_DEFAULT_BASE = null;
 
     /**
+     * Redis default username: will not authenticate
+     */
+    const REDIS_DEFAULT_USERNAME = null;
+
+    /**
      * Redis default password: will not authenticate
      */
     const REDIS_DEFAULT_PASSWORD = null;
@@ -121,6 +126,7 @@ class Redis_Client_Manager
             'host'     => self::REDIS_DEFAULT_HOST,
             'port'     => self::REDIS_DEFAULT_PORT,
             'base'     => self::REDIS_DEFAULT_BASE,
+            'username' => self::REDIS_DEFAULT_USERNAME,
             'password' => self::REDIS_DEFAULT_PASSWORD,
             'socket'   => self::REDIS_DEFAULT_SOCKET
         );
