@@ -72,8 +72,8 @@ function backdrop_lookup_path($action, $path = '', $path_language = NULL) {
     if (null === $cache['whitelist']) {
       $cache['whitelist'] = backdrop_path_alias_whitelist_rebuild();
     }
-    // TODO This variable was probably removed in Backdrop without replacement.
-    $denyAdmin = (bool) variable_get('path_alias_admin_blacklist', true);
+    // See the README.md file for explanation of this setting.
+    $denyAdmin = (bool) settings_get('path_alias_admin_blacklist', TRUE);
   }
 
   // If no language is explicitly specified we default to the current URL
