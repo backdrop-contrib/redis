@@ -124,23 +124,24 @@ function backdrop_lookup_path($action, $path = '', $path_language = NULL) {
         // the right language (keeps track of LANGUAGE_NONE or specific language
         // so that default fallback behavior is the same that core).
         if ($path_language == LANGUAGE_NONE) {
-          list($ret, $path_language) = db_query_range("SELECT alias, langcode FROM {url_alias} WHERE source = :source AND langcode = :language ORDER BY pid DESC", 0, 1, array(
+          list($ret, $path_language) = safe_list(db_query_range("SELECT alias, langcode FROM {url_alias} WHERE source = :source AND langcode = :language ORDER BY pid DESC", 0, 1, array(
             ':source' => $path,
             ':language' => $path_language,
-          ))->fetch(PDO::FETCH_NUM);
+          ))->fetch(PDO::FETCH_NUM), 2);
         }
         else if ($path_language > LANGUAGE_NONE) {
-          list($ret, $path_language) = db_query_range("SELECT alias, langcode FROM {url_alias} WHERE source = :source AND langcode IN (:language) ORDER BY langcode DESC, pid DESC", 0, 1, array(
+          list($ret, $path_language) = safe_list(db_query_range("SELECT alias, langcode FROM {url_alias} WHERE source = :source AND langcode IN (:language) ORDER BY langcode DESC, pid DESC", 0, 1, array(
             ':source' => $path,
             ':language' => array($path_language, LANGUAGE_NONE),
-          ))->fetch(PDO::FETCH_NUM);
+          ))->fetch(PDO::FETCH_NUM), 2);
         }
         else {
-          list($ret, $path_language) = db_query_range("SELECT alias, langcode FROM {url_alias} WHERE source = :source AND langcode IN (:language) ORDER BY langcode ASC, pid DESC", 0, 1, array(
+          list($ret, $path_language) = safe_list(db_query_range("SELECT alias, langcode FROM {url_alias} WHERE source = :source AND langcode IN (:language) ORDER BY langcode ASC, pid DESC", 0, 1, array(
             ':source' => $path,
             ':language' => array($path_language, LANGUAGE_NONE),
-          ))->fetch(PDO::FETCH_NUM);
-        }
+          ))->fetch(PDO::FETCH_NUM), 2);
+	}
+
         // Getting here with a value means we need to cache it
         if (empty($ret)) {
           $ret = false;
@@ -168,23 +169,24 @@ function backdrop_lookup_path($action, $path = '', $path_language = NULL) {
         // the right language (keeps track of LANGUAGE_NONE or specific language
         // so that default fallback behavior is the same that core).
         if ($path_language == LANGUAGE_NONE) {
-          list($ret, $path_language) = db_query_range("SELECT source, langcode FROM {url_alias} WHERE alias = :alias AND langcode = :language ORDER BY pid DESC", 0, 1, array(
+          list($ret, $path_language) = safe_list(db_query_range("SELECT source, langcode FROM {url_alias} WHERE alias = :alias AND langcode = :language ORDER BY pid DESC", 0, 1, array(
             ':alias' => $path,
             ':language' => LANGUAGE_NONE,
-          ))->fetch(PDO::FETCH_NUM);
+          ))->fetch(PDO::FETCH_NUM), 2);
         }
         else if ($path_language > LANGUAGE_NONE) {
-          list($ret, $path_language) = db_query_range("SELECT source, langcode FROM {url_alias} WHERE alias = :alias AND langcode IN (:language) ORDER BY langcode DESC, pid DESC", 0, 1, array(
+          list($ret, $path_language) = safe_list(db_query_range("SELECT source, langcode FROM {url_alias} WHERE alias = :alias AND langcode IN (:language) ORDER BY langcode DESC, pid DESC", 0, 1, array(
             ':alias' => $path,
             ':language' => array($path_language, LANGUAGE_NONE),
-          ))->fetch(PDO::FETCH_NUM);
+          ))->fetch(PDO::FETCH_NUM), 2);
         }
         else {
-          list($ret, $path_language) = db_query_range("SELECT source, langcode FROM {url_alias} WHERE alias = :alias AND langcode IN (:language) ORDER BY langcode ASC, pid DESC", 0, 1, array(
+          list($ret, $path_language) = safe_list(db_query_range("SELECT source, langcode FROM {url_alias} WHERE alias = :alias AND langcode IN (:language) ORDER BY langcode ASC, pid DESC", 0, 1, array(
             ':alias' => $path,
             ':language' => array($path_language, LANGUAGE_NONE),
-          ))->fetch(PDO::FETCH_NUM);
-        }
+          ))->fetch(PDO::FETCH_NUM), 2);
+	}
+
         // Getting here with a value means we need to cache it
         if (empty($ret)) {
           $ret = false;
@@ -201,6 +203,14 @@ function backdrop_lookup_path($action, $path = '', $path_language = NULL) {
 
   return $ret;
 }
+
+function safe_list(mixed $input, int $length, mixed $default = null) {
+  if (!is_array($input)) {
+	  $input = [];
+  }
+  return array_pad(array_slice($input, 0, $length), $length, $default);
+}
+
 
 /**
  * Cache system paths for a page.
